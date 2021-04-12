@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+
+  studentmanagement:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: studentmanagement
+    network_mode: bridge
+    environment:
+      - SPRING_PROFILES_ACTIVE=test,docker
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=student
+      - DB_HOSTNAME=postgres
+    ports:
+      - "8080:8080"
+      - "8083:8083"
+    depends_on:
+      - postgres
+    links:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    network_mode: bridge
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=student
+    restart: unless-stopped
+    volumes:
+      - ./mnt/postgresql:/var/lib/postgresql
