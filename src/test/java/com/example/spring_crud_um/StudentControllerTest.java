@@ -1,6 +1,7 @@
 package com.example.spring_crud_um;
 
 
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.net.URI;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest //@SpringBootTest(classes = Main, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @AutoConfigureMockMvc
 @WebMvcTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE )
@@ -27,25 +30,24 @@ import java.net.URI;
 class StudentControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
-
-    //@LocalServerPort
-    //int port
-
-    //def request = createRequest().header(new Header("traceId", traceId)).auth().preemptive().basic(user, password)
+    private MockMvc mvc;
 
 
     @Autowired
     HttpSecurity http;
 
+    @Autowired
+    private WebApplicationContext context;
 
-   // @Autowired
-   // private StudentController studentController;
 
-    //@Before
-   /* public void setUp() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(studentController).build();
-    }*/
+    // @Before
+    //public void setUp() {
+    //mvc = MockMvcBuilders
+    //.webAppContextSetup(context)
+    //.apply(springSecurity())
+    //.build();
+    //}
+
 
     @Test
     void getStudentsTest() throws Exception {
@@ -61,7 +63,15 @@ class StudentControllerTest {
         //When                                          //Then
         //mockMvc.perform(MockMvcRequestBuilders.get(uri)).andExpect(MockMvcResultMatchers.status().is(200));
 
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uri)).andExpect(MockMvcResultMatchers.status().isOk());
+        this.mvc.perform(MockMvcRequestBuilders.get(uri)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    //@WithMockUser("spring")
+    @Test
+    public void givenAuthRequestOnPrivateService_shouldSucceedWith200() throws Exception {
+        //mvc.perform(get("/private/hello")
+        //.contentType(MediaType.APPLICATION_JSON))
+        //.andExpect(status().isOk());
     }
 
 }
