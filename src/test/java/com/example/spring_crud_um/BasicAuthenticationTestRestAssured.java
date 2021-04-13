@@ -11,11 +11,11 @@ import static io.restassured.RestAssured.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class RestAssuredTest {
+public class BasicAuthenticationTestRestAssured {
 
 
     @Test
-    public void TestGet200Value(){
+    public void BasicAuthenticationTest_whenStatusCode_200(){
         given().auth()
                 .basic("admin", "admin")
                 .when()
@@ -26,7 +26,7 @@ public class RestAssuredTest {
 
     }
     @Test
-    public void TestGet401Value(){
+    public void BasicAuthenticationTest_whenStatusCode_401(){
         given().auth()
                 .basic("", "")
                 .when()
@@ -37,7 +37,7 @@ public class RestAssuredTest {
 
     }
     @Test
-    public void TestGet404Value(){
+    public void BasicAuthenticationTest_whenStatusCode_404(){
         given().auth()
                 .basic("admin", "admin")
                 .when()
