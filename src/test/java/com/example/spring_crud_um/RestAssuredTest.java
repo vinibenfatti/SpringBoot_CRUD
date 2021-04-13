@@ -15,7 +15,7 @@ public class RestAssuredTest {
 
 
     @Test
-    public void TestGet(){
+    public void TestGet200Value(){
         given().auth()
                 .basic("admin", "admin")
                 .when()
@@ -23,6 +23,28 @@ public class RestAssuredTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value());
+
+    }
+    @Test
+    public void TestGet401Value(){
+        given().auth()
+                .basic("", "")
+                .when()
+                .get("http://localhost:8080/api/v1/student")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+
+    }
+    @Test
+    public void TestGet404Value(){
+        given().auth()
+                .basic("admin", "admin")
+                .when()
+                .get("http://localhost:8080/api/v1/stud")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND.value());
 
     }
 }
