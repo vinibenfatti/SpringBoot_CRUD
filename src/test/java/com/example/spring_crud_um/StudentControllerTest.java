@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 
 import com.example.spring_crud_um.student.Student;
 import com.example.spring_crud_um.student.StudentRepository;
+import com.example.spring_crud_um.student.StudentService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,42 +48,34 @@ public class StudentControllerTest {
     }
 
     @MockBean
-    StudentRepository studentRepository;
+    StudentService studentService;
 
     @Test
     public void getAllStudents() {
 
-
-
         List<Student> testListStudent = new ArrayList<Student>();
-        testListStudent.add(new Student ("Test","test@gmail.com", LocalDate.now()));
-        testListStudent.add(new Student ("Test2","test2@gmail.com", LocalDate.now()));
-        when(studentRepository.findAll()).thenReturn(testListStudent);
+        testListStudent.add(new Student (1L,"Test","test@gmail.com", LocalDate.now(),0));
+        testListStudent.add(new Student (2L,"Test2","test2@gmail.com", LocalDate.now(),0));
+        when(studentService.getStudents()).thenReturn(testListStudent);
 
-        //Teste de retorno
-        //assertThat(studentRepository.findAll()).isEqualTo(testListStudent);
+        List<Student> resultStudent =
+                Arrays.asList(
+                        given().auth()
+                        .basic("admin", "admin")
+                        .when()
+                        .get(uri +  "/api/v1/student")
+                        .then()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .as(Student[].class));
 
-        //Teste de autenticação
-        /*given().auth()
-                .basic("admin", "admin")
-                .when()
-                .get(uri +  "/api/v1/student")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value());*/
+        assertThat(resultStudent).isEqualTo(testListStudent);
 
-
-        //List<Student> resultStudent = get(uri +  "/api/v1/student")
-        //.then()
-        //.assertThat()
-        //.statusCode(HttpStatus.UNAUTHORIZED.value())
-        //.extract()
-        //.as((Type) Student.class);
-        //assertThat(resultStudent).isEqualTo(1);
     }
 
     @Test
     public void registerNewStudent() {
+
     }
 
     @Test

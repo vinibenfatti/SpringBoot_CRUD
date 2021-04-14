@@ -19,10 +19,10 @@ public class BasicAuthenticationTestRestAssured {
         given().auth()
                 .basic("admin", "admin")
                 .when()
-                .get("http://localhost:8080/api/v1/student")
+                    .get("http://localhost:8080/api/v1/student")
                 .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value());
+                    .assertThat()
+                    .statusCode(HttpStatus.OK.value());
 
     }
     @Test
