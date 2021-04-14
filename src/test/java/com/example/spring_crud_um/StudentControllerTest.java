@@ -62,6 +62,7 @@ public class StudentControllerTest {
                 Arrays.asList(
                         given().auth()
                         .basic("admin", "admin")
+                        .contentType("application/json")
                         .when()
                         .get(uri +  "/api/v1/student")
                         .then()
@@ -74,7 +75,10 @@ public class StudentControllerTest {
     }
 
     @Test
-    public void registerNewStudent() {
+    public void registerNewStudent(){
+
+
+
 
     }
 
