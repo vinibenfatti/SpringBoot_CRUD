@@ -23,7 +23,7 @@ public class StudentRepositoryTest {
     private StudentRepository repository;
 
     @Test
-    public void findStudentByEmail() {
+    public void findStudentByEmailTest() {
         //Given
         String emailStudentTest="mariam.jamala@gmail.com";
 
