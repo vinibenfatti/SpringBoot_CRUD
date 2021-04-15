@@ -21,6 +21,7 @@ import com.example.spring_crud_um.student.StudentService;
 import com.jayway.jsonpath.JsonPath;
 import groovy.json.JsonBuilder;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 
 import net.minidev.json.JSONObject;
@@ -64,6 +65,7 @@ public class StudentControllerTest {
         testListStudent.add(new Student (2L,"Test2","test2@gmail.com", LocalDate.now(),0));
         when(studentService.getStudents()).thenReturn(testListStudent);
 
+
         List<Student> resultStudent =
                 Arrays.asList(
                         given()
@@ -85,7 +87,7 @@ public class StudentControllerTest {
     public void registerNewStudent(){
 
 
-        //RestAssured.defaultParser = Parser.JSON;
+        RestAssured.defaultParser = Parser.JSON;
 
         /*Map<String, String> request = new HashMap<String, String>();
         request.put("id", "5");
@@ -101,8 +103,6 @@ public class StudentControllerTest {
         request.put("age", "0");
         request.put("name", "Test");
 
-
-
         /*String request = "{\r\n" +
                 "   \"id\":\"5\",\r\n" +
                 "   \"email\":\"test@gmail.com\",\r\n" +
@@ -111,16 +111,18 @@ public class StudentControllerTest {
                 "   \"name\":\"Test\"\r\n" +
                 "}";*/
 
-        System.out.println(request.toString());
+        //Student student=new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
 
+        System.out.println(request);
 
         int studentId =
                 given()
+                        .headers("Content-Type", ContentType.JSON, "Accept", ContentType.JSON)
                         .contentType("application/json")
-                        .header("Content-Type", "application/json")
                         .auth()
                         .basic("admin", "admin")
-                        .body(request.toString())
+                        .body(request)
+                        //.body(request.toJSONString())
                 .when()
                         .post(uri +  "/api/v1/student")
                 .then()
@@ -129,25 +131,33 @@ public class StudentControllerTest {
                         .extract()
                         .path("id");
 
+        System.out.println(request);
+
         assertThat(studentId).isEqualTo(5);
-
-
-        /*Map<String, Object> data = new HashMap<String, Object>();
-        data.put( "name", "Mars" );
-        data.put( "age", 32 );
-        data.put( "city", "NY" );
-        JSONObject json = new JSONObject();
-        json.putAll( data );
-        System.out.printf( "JSON: %s", json.toString(2) );*/
-
-
-
-
 
     }
 
     @Test
     public void deleteStudent() {
+
+        Student testStudent = new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
+
+
+        Response response=
+                given()
+                        .auth()
+                        .basic("admin", "admin")
+                        .header("Content-type", "application/json")
+                .when()
+                        .delete(uri +  "/api/v1/student/" + testStudent.getId())
+                        .then()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .response();
+
+        Assert.assertEquals(200,response.statusCode());
+
+
     }
 
     @Test
