@@ -86,8 +86,7 @@ public class StudentControllerTest {
     @Test
     public void registerNewStudent(){
 
-
-        RestAssured.defaultParser = Parser.JSON;
+        //RestAssured.defaultParser = Parser.JSON;
 
         /*Map<String, String> request = new HashMap<String, String>();
         request.put("id", "5");
@@ -113,27 +112,24 @@ public class StudentControllerTest {
 
         //Student student=new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
 
-        System.out.println(request);
 
-        int studentId =
-                given()
+        //int studentId =
+                given().log().all()
                         .headers("Content-Type", ContentType.JSON, "Accept", ContentType.JSON)
-                        .contentType("application/json")
+                        .contentType(ContentType.JSON)
                         .auth()
                         .basic("admin", "admin")
-                        .body(request)
-                        //.body(request.toJSONString())
+                        //.body(request)
+                        .body(request.toJSONString())
                 .when()
                         .post(uri +  "/api/v1/student")
-                .then()
+                .then().log().all()
                         .assertThat()
-                        .statusCode(HttpStatus.OK.value())
-                        .extract()
-                        .path("id");
+                        .statusCode(HttpStatus.OK.value());
+                        //.extract()
+                        //.path("id");
 
-        System.out.println(request);
-
-        assertThat(studentId).isEqualTo(5);
+        //assertThat(studentId).isEqualTo(5);
 
     }
 
