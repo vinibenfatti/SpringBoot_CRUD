@@ -25,13 +25,14 @@ public class StudentService {
        return studentRepository.findAll();
     }
 
-    public void addNewStudent(Student student) {
+    public Student addNewStudent(Student student) {
         Optional<Student> studentOpitional = studentRepository
                 .findStudentByEmail(student.getEmail());
         if(studentOpitional.isPresent()){
             throw new IllegalStateException("email taken");
         }
         studentRepository.save(student);
+        return student;
     }
 
     public void deleteStudent(Long studentId) {

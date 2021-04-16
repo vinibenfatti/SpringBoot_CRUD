@@ -25,6 +25,7 @@ import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 
 import net.minidev.json.JSONObject;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,13 +69,13 @@ public class StudentControllerTest {
 
         List<Student> resultStudent =
                 Arrays.asList(
-                        given()
+                        given().log().all()
                                 .auth()
                                 .basic("admin", "admin")
                                 .contentType("application/json")
-                        .when()
+                        .when().log().all()
                                 .get(uri +  "/api/v1/student")
-                        .then()
+                        .then().log().all()
                                 .statusCode(HttpStatus.OK.value())
                                 .extract()
                                 .as(Student[].class));
@@ -86,50 +87,33 @@ public class StudentControllerTest {
     @Test
     public void registerNewStudent(){
 
-        //RestAssured.defaultParser = Parser.JSON;
-
-        /*Map<String, String> request = new HashMap<String, String>();
-        request.put("id", "5");
-        request.put("email", "test@gmail.com");
-        request.put("dob", "2000-07-19");
-        request.put("age", "0");
-        request.put("name", "Test");*/
+        Student newStudent = new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
+        Student savedStudent = new Student();
+        when(studentService.addNewStudent(newStudent)).thenReturn(newStudent);
 
         JSONObject request = new JSONObject();
-        request.put("id", "5");
+        request.put("id", 5);
         request.put("email", "test@gmail.com");
-        request.put("dob", "2000-07-19");
-        request.put("age", "0");
+        request.put("dob", 2000-07-19);
+        request.put("age", 0);
         request.put("name", "Test");
 
-        /*String request = "{\r\n" +
-                "   \"id\":\"5\",\r\n" +
-                "   \"email\":\"test@gmail.com\",\r\n" +
-                "   \"dob\":\"2000-07-19\",\r\n" +
-                "   \"age\":\"0\"\r\n" +
-                "   \"name\":\"Test\"\r\n" +
-                "}";*/
-
-        //Student student=new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
-
-
-        //int studentId =
-                given().log().all()
+       Response response = given().log().all()
                         .headers("Content-Type", ContentType.JSON, "Accept", ContentType.JSON)
                         .contentType(ContentType.JSON)
                         .auth()
                         .basic("admin", "admin")
-                        //.body(request)
-                        .body(request.toJSONString())
-                .when()
+                        .body(request)
+        .when()
                         .post(uri +  "/api/v1/student")
-                .then().log().all()
+        .then().log().all()
                         .assertThat()
-                        .statusCode(HttpStatus.OK.value());
-                        //.extract()
-                        //.path("id");
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .response();
 
-        //assertThat(studentId).isEqualTo(5);
+
+
 
     }
 
@@ -158,5 +142,24 @@ public class StudentControllerTest {
 
     @Test
     public void updateStudent() {
+
+        Student testStudent = new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
+        String newName="Vinicius";
+        String newEmail="vinicius@gmail.com";
+
+        Response response=
+                given()
+                        .auth()
+                        .basic("admin", "admin")
+                        .header("Content-type", "application/json")
+                .when()
+                        .put(uri +  "/api/v1/student/" + testStudent.getId() +  "?name=" + newName + "&email=" + newEmail)
+                        .then()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .response();
+
+        Assert.assertEquals(200,response.statusCode());
+
     }
 }
