@@ -2,8 +2,6 @@ package com.example.spring_crud_um;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -49,7 +47,7 @@ public class StudentControllerTest {
     @Test
     public void whenGetAllStudentsShouldReturnStatus200() {
 
-        List<Student> testListStudent = new ArrayList<Student>();
+        List<Student> testListStudent = new ArrayList<>();
         testListStudent.add(new Student (1L,"Test","test@gmail.com", LocalDate.now(),0));
         testListStudent.add(new Student (2L,"Test2","test2@gmail.com", LocalDate.now(),0));
         when(studentService.getAllStudents()).thenReturn(testListStudent);
@@ -70,14 +68,36 @@ public class StudentControllerTest {
         assertThat(resultStudent).isEqualTo(testListStudent);
 
     }
+    @Test
+    public void whenGetStudentsByIdShouldReturnStatus200() {
 
+        List<Student> testListStudent = new ArrayList<>();
+        testListStudent.add(new Student (1L,"Test","test@gmail.com", LocalDate.now(),0));
+        when(studentService.getStudentsById(1L)).thenReturn(testListStudent);
+
+        List<Student> resultStudent =
+                Arrays.asList(
+                        given().log().all()
+                                .auth()
+                                .basic("admin", "admin")
+                                .contentType("application/json")
+                                .when().log().all()
+                                .get(uri +  "/api/v1/student/"+1L)
+                                .then().log().all()
+                                .statusCode(HttpStatus.OK.value())
+                                .extract()
+                                .as(Student[].class));
+
+        assertThat(resultStudent).isEqualTo(testListStudent);
+
+    }
     @Test
     public void whenRegisterNewStudentShouldReturnStatus200(){
 
         JSONObject request = new JSONObject();
         request.put("email", "test@gmail.com");
         request.put("dob", "2000-07-19");
-        request.put("name", "Teste");
+        request.put("name", "Test");
 
        Response response = given().log().all()
                         .headers("Content-Type", ContentType.JSON, "Accept", ContentType.JSON)
