@@ -39,10 +39,10 @@ public class StudentController {
     }
 
     @PutMapping(path = "{studentId}")
-    public void updateStudent(
+    public List<Student> updateStudent(
             @PathVariable("studentId") Long studentId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email){
-       studentService.updateStudent(studentId, name, email);
+       return studentService.updateStudent(studentId, name, email);
     }
 }
