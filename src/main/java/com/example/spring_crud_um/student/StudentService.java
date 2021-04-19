@@ -21,8 +21,17 @@ public class StudentService {
     }
 
 
-    public List<Student> getStudents() {
+    public List<Student> getAllStudents() {
        return studentRepository.findAll();
+    }
+
+    public List<Student> getStudentsById(Long studentId) {
+        boolean exists = studentRepository.existsById(studentId);
+        if(!exists){
+            throw new IllegalStateException(
+                    "Student with id"+ studentId + "does not exists");
+        }
+        return studentRepository.findStudentById(studentId);
     }
 
     public Student addNewStudent(Student student) {
@@ -31,8 +40,11 @@ public class StudentService {
         if(studentOpitional.isPresent()){
             throw new IllegalStateException("email taken");
         }
-        studentRepository.save(student);
-        return student;
+        if (!student.getName().isBlank() & !student.getEmail().isBlank() & student.getDob() != null) {
+            studentRepository.save(student);
+            return student;
+        }
+            throw new IllegalStateException("error params");
     }
 
     public void deleteStudent(Long studentId) {
@@ -58,6 +70,7 @@ public class StudentService {
                 throw new IllegalStateException("email taken");
             }
             student.setEmail(email);
+
         }
 
     }

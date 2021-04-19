@@ -3,8 +3,6 @@ package com.example.spring_crud_um.student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 @RestController  //Todo o metodo irá ter o @ResponseBody
@@ -19,12 +17,18 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getStudents() {
-       return studentService.getStudents();
+    public List<Student> getAllStudents() {
+       return studentService.getAllStudents();
+    }
+
+    @GetMapping(path = "{studentId}")
+    public List<Student> getStudentsById(
+        @PathVariable("studentId") Long studentId) throws Exception {
+        return studentService.getStudentsById(studentId);
     }
 
     @PostMapping
-    public Student registerNewStudent(@RequestBody Student student){
+    public Student registerNewStudent(@RequestBody Student student) throws  Exception{
         return studentService.addNewStudent(student);
     }
 
@@ -39,6 +43,6 @@ public class StudentController {
             @PathVariable("studentId") Long studentId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email){
-        studentService.updateStudent(studentId, name, email);
+       studentService.updateStudent(studentId, name, email);
     }
 }
