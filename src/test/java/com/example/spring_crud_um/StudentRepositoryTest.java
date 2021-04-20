@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -32,5 +33,18 @@ public class StudentRepositoryTest {
         //Then
         Assert.assertNotNull(studentOptional);
         Assert.assertEquals(emailStudentTest,studentOptional.get().getEmail());
+    }
+
+    @Test
+    public void findStudentByIdTest() {
+        //Given
+        Long idStudentTest=1L;
+
+        //When
+        List<Student> studentList = repository.findStudentById(idStudentTest);
+
+        //Then
+        Assert.assertNotNull(studentList);
+        Assert.assertEquals(idStudentTest,studentList.get(0).getId());
     }
 }
