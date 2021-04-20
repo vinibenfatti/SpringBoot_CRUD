@@ -1,8 +1,7 @@
 package com.example.spring_crud_um.student;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +12,7 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    @Autowired
+
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
@@ -27,29 +26,29 @@ public class StudentService {
         boolean exists = studentRepository.existsById(studentId);
         if(!exists){
             throw new IllegalStateException(
-                    "Student with id"+ studentId + "does not exists");
+                    "Student with id: "+ studentId + " does not exists");
         }
         return studentRepository.findStudentById(studentId);
     }
 
     public Student addNewStudent(Student student) {
-        Optional<Student> studentOpitional = studentRepository
+        Optional<Student> studentOpt = studentRepository
                 .findStudentByEmail(student.getEmail());
-        if(studentOpitional.isPresent()){
-            throw new IllegalStateException("email taken");
+        if(studentOpt.isPresent()){
+            throw new IllegalStateException("Email already exists");
         }
         if (!student.getName().isBlank() & !student.getEmail().isBlank() & student.getDob() != null) {
             studentRepository.save(student);
             return student;
         }
-            throw new IllegalStateException("error params");
+            throw new IllegalStateException("Parameter error, bad request");
     }
 
     public void deleteStudent(Long studentId) {
                boolean exists = studentRepository.existsById(studentId);
                if(!exists){
                    throw new IllegalStateException(
-                           "student with id"+ studentId + "does not exists");
+                           "Student with id: "+ studentId + " does not exists");
                }
                studentRepository.deleteById(studentId);
     }
@@ -57,7 +56,7 @@ public class StudentService {
     @Transactional
     public List<Student> updateStudent(Long studentId, String name, String email) {
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalStateException(
-                "student with id"+ studentId + "does not exists"));
+                "Student with id: "+ studentId + "does not exists"));
         if(name != null && name.length() > 0 && !Objects.equals(student.getName(),name)){
             student.setName(name);
         }
@@ -65,7 +64,7 @@ public class StudentService {
         if(email != null && email.length() > 0 && !Objects.equals(student.getEmail(),email)) {
             Optional<Student> studentOptional = studentRepository.findStudentByEmail(email);
             if (studentOptional.isPresent()) {
-                throw new IllegalStateException("email taken");
+                throw new IllegalStateException("Email already exists");
             }
             student.setEmail(email);
 

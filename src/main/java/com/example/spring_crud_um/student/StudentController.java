@@ -1,17 +1,15 @@
 package com.example.spring_crud_um.student;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-@RestController  //Todo o metodo irá ter o @ResponseBody
-@RequestMapping(path = "api/v1/student") // EndPoint
+@RestController
+@RequestMapping(path = "api/v1/student")
 public class StudentController {
 
     private final StudentService studentService;
 
-    @Autowired
+
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
@@ -23,12 +21,12 @@ public class StudentController {
 
     @GetMapping(path = "{studentId}")
     public List<Student> getStudentsById(
-        @PathVariable("studentId") Long studentId) throws Exception {
+        @PathVariable("studentId") Long studentId){
         return studentService.getStudentsById(studentId);
     }
 
     @PostMapping
-    public Student registerNewStudent(@RequestBody Student student) throws  Exception{
+    public Student registerNewStudent(@RequestBody Student student){
         return studentService.addNewStudent(student);
     }
 
