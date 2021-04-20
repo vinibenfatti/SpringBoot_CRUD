@@ -25,14 +25,15 @@ public class StudentController {
     }
 
     @PostMapping
-    public Student registerNewStudent(@RequestBody Student student){
-        return studentService.addNewStudent(student);
+    public String registerNewStudent(@RequestBody Student student){
+        return studentService.addNewStudent(student) + " posted";
     }
 
     @DeleteMapping(path = "{studentId}")
-    public void deleteStudent(
+    public String deleteStudent(
             @PathVariable("studentId") Long studentId){
         studentService.deleteStudent(studentId);
+        return ("The student with ID:"+ studentId + " deleted");
     }
 
     @PutMapping(path = "{studentId}")

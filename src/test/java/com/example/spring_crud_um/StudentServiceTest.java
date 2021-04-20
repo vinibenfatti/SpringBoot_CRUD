@@ -32,16 +32,6 @@ public class StudentServiceTest {
 
     @Test
     public void whenGetAllStudents() {
-        //Given
-        Long idTest=1L;
-
-        //When
-        List<Student> studentList = studentService.getAllStudents();
-
-        //Then
-        Assert.assertNotNull(studentList);
-        //Assert.assertEquals(idTest,studentList.get(0).getId());
-
     }
 
     @Test

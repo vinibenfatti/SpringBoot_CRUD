@@ -25,7 +25,7 @@ public class StudentRepositoryTest {
     @Test
     public void findStudentByEmailTest() {
         //Given
-        String emailStudentTest="mariam.jamala@gmail.com";
+        String emailStudentTest="maria@gmail.com";
 
         //When
         Optional<Student> studentOptional = repository.findStudentByEmail(emailStudentTest);

@@ -16,6 +16,7 @@ import io.restassured.http.ContentType;
 import net.minidev.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -93,12 +94,17 @@ public class StudentControllerTestWithMock {
     }
     @Test
     public void whenRegisterNewStudentShouldReturnStatus200(){
+        Student testStudent = new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
 
         JSONObject request = new JSONObject();
-        request.put("email", "test@gmail.com");
-        request.put("dob", "2000-07-19");
-        request.put("name", "Test");
+        request.put("id", testStudent.getId());
+        request.put("email", testStudent.getEmail());
+        request.put("dob", LocalDate.now());
+        request.put("age", testStudent.getAge());
+        request.put("name", testStudent.getName());
 
+
+        when(studentService.addNewStudent(testStudent)).thenReturn(testStudent);
        Response response = given().log().all()
                         .headers("Content-Type", ContentType.JSON, "Accept", ContentType.JSON)
                         .contentType(ContentType.JSON)
@@ -113,12 +119,14 @@ public class StudentControllerTestWithMock {
                         .response();
 
         Assert.assertEquals(200,response.statusCode());
+        Assertions.assertEquals(testStudent + " posted", response.getBody().asString());
     }
 
     @Test
     public void whenDeleteStudentShouldReturnStatus200() {
 
         Student testStudent = new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
+        when(studentService.deleteStudent(testStudent.getId())).thenReturn(testStudent.getId());
 
         Response response=
                 given().log().all()
@@ -132,6 +140,7 @@ public class StudentControllerTestWithMock {
                         .response();
 
         Assert.assertEquals(200,response.statusCode());
+        Assert.assertEquals("The student with ID:"+ testStudent.getId() + " deleted", response.getBody().asString());
 
     }
 
@@ -142,7 +151,14 @@ public class StudentControllerTestWithMock {
         String newName="Vinicius";
         String newEmail="vinicius@gmail.com";
 
-        Response response=
+        List<Student> testListNewStudent = new ArrayList<>();
+        testListNewStudent.add(new Student (1L,newName,newEmail, LocalDate.now(),0));
+
+        when(studentService.updateStudent(testStudent.getId(),newName,newEmail))
+                .thenReturn(testListNewStudent);
+
+        List<Student> resultStudent =
+                Arrays.asList(
                 given().log().all()
                         .auth()
                         .basic("admin", "admin")
@@ -150,10 +166,11 @@ public class StudentControllerTestWithMock {
                 .when().log().all()
                         .put(uri +  "/api/v1/student/" + testStudent.getId() +  "?name=" + newName + "&email=" + newEmail)
                         .then()
+                        .statusCode(HttpStatus.OK.value())
                         .extract()
-                        .response();
+                        .as(Student[].class));
 
-        Assert.assertEquals(200,response.statusCode());
+        assertThat(resultStudent).isEqualTo(testListNewStudent);
 
     }
 }
