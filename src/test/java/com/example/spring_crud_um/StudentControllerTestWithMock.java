@@ -105,7 +105,7 @@ public class StudentControllerTestWithMock {
                         .auth()
                         .basic("admin", "admin")
                         .body(request)
-        .when()
+        .when().log().all()
                         .post(uri +  "/api/v1/student")
         .then().log().all()
                         .assertThat()
@@ -121,11 +121,11 @@ public class StudentControllerTestWithMock {
         Student testStudent = new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
 
         Response response=
-                given()
+                given().log().all()
                         .auth()
                         .basic("admin", "admin")
                         .header("Content-type", "application/json")
-                .when()
+                .when().log().all()
                         .delete(uri +  "/api/v1/student/" + testStudent.getId())
                         .then()
                         .extract()
@@ -143,11 +143,11 @@ public class StudentControllerTestWithMock {
         String newEmail="vinicius@gmail.com";
 
         Response response=
-                given()
+                given().log().all()
                         .auth()
                         .basic("admin", "admin")
                         .header("Content-type", "application/json")
-                .when()
+                .when().log().all()
                         .put(uri +  "/api/v1/student/" + testStudent.getId() +  "?name=" + newName + "&email=" + newEmail)
                         .then()
                         .extract()

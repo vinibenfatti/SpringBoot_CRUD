@@ -16,7 +16,6 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE )
-//@ActiveProfile("test")//Para forçar a pegar o profile do DB de teste
 public class StudentRepositoryTest {
 
     @Autowired
