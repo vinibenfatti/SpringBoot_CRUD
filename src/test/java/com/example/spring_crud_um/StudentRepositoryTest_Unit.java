@@ -1,5 +1,7 @@
-package com.example.spring_crud_um.student;
+package com.example.spring_crud_um;
 
+import com.example.spring_crud_um.student.Student;
+import com.example.spring_crud_um.student.StudentRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Assert;

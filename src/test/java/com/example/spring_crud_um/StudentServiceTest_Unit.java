@@ -1,19 +1,22 @@
-package com.example.spring_crud_um.student;
+package com.example.spring_crud_um;
 
+import com.example.spring_crud_um.student.Student;
+import com.example.spring_crud_um.student.StudentRepository;
+import com.example.spring_crud_um.student.StudentService;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.BDDMockito;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.core.AutoConfigureCache;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -46,21 +49,21 @@ class StudentServiceTest_Unit {
     @Test
     @Disabled
     void canGetStudentsById() {
+
         //Given
-        Long id = 1L;
+        List<Student> student = new ArrayList<>();
+        student.add(new Student (1L,"Test","test@gmail.com", LocalDate.now(),0));
+
+        Mockito.when(studentRepository.findStudentById(student.get(0).getId())).thenReturn(student);
+        Mockito.when(studentRepository.existsById(student.get(0).getId())).thenReturn(true);
 
         //When
-        underTest.getStudentsById(id);
+        underTest.getStudentsById(student.get(0).getId());
 
         //Then
-        ArgumentCaptor<Long> LongArgumentCaptor = ArgumentCaptor.forClass(Long.class);
-        verify(studentRepository).findStudentById(LongArgumentCaptor.capture());
-
-        Long capturedStudent = LongArgumentCaptor.getValue();
-
-        assertThat(capturedStudent).isEqualTo(id);
-
+        verify(studentRepository).findStudentById(student.get(0).getId());
     }
+
 
     @Test
     void canAddNewStudent() {
@@ -98,12 +101,59 @@ class StudentServiceTest_Unit {
     }
 
     @Test
-    @Disabled
-    void deleteStudent() {
+    void canDeleteStudent() {
+        // given
+        Student student =new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
+
+        studentRepository.save(student);
+
+        BDDMockito.given(studentRepository.existsById(student.getId())).willReturn(true);
+
+        // when
+        underTest.deleteStudent(student.getId());
+
+        // then
+        verify(studentRepository).deleteById(student.getId());
+    }
+    @Test
+    void willThrowWhenIdNotFound() {
+        // Given
+        Student student =new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
+
+        // When
+        BDDMockito.given(studentRepository.existsById(student.getId())).willReturn(false);
+
+        // Then
+        assertThatThrownBy(() -> underTest.deleteStudent(student.getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Student with id: "+ student.getId() + " does not exists");
     }
 
     @Test
     @Disabled
     void updateStudent() {
+
+        // Given
+
+        Student studentObj =new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
+        List<Student> student = new ArrayList<>();
+        student.add(studentObj);
+
+        String name = "Vinicius";
+        String email = "vini@gmail.com";
+
+        Mockito.when(studentRepository.findStudentById(student.get(0).getId())).thenReturn(student);
+        Mockito.when(studentRepository.findById(student.get(0).getId())).thenReturn(Optional.of(studentObj));
+        Mockito.when(studentRepository.existsById(student.get(0).getId())).thenReturn(true);
+
+        // when
+        underTest.updateStudent(student.get(0).getId(), name, email);
+
+        // then
+        assertThat(studentObj.getName()).isEqualTo(name);
+        assertThat(studentObj.getEmail()).isEqualTo(email);
+
+
+
     }
 }

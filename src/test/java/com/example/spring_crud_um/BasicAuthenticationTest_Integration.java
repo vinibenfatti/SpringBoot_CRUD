@@ -11,7 +11,7 @@ import static io.restassured.RestAssured.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class BasicAuthenticationTestRestAssured {
+public class BasicAuthenticationTest_Integration {
 
 
     @Test

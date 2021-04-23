@@ -30,7 +30,7 @@ import io.restassured.response.Response;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class StudentControllerTestWithMock {
+public class StudentControllerAndServiceTest_Integration {
 
     @LocalServerPort
     private int port;
