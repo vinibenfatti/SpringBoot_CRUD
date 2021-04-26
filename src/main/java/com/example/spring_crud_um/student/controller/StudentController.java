@@ -1,5 +1,7 @@
-package com.example.spring_crud_um.student;
+package com.example.spring_crud_um.student.controller;
 
+import com.example.spring_crud_um.student.service.StudentService;
+import com.example.spring_crud_um.student.model.Student;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 

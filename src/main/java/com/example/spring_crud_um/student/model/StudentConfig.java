@@ -1,4 +1,4 @@
-package com.example.spring_crud_um.student;
+package com.example.spring_crud_um.student.model;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

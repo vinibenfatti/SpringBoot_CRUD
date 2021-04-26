@@ -1,6 +1,8 @@
-package com.example.spring_crud_um.student;
+package com.example.spring_crud_um.student.service;
 
 
+import com.example.spring_crud_um.student.repository.StudentRepository;
+import com.example.spring_crud_um.student.model.Student;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;

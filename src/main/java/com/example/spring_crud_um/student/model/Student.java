@@ -1,4 +1,4 @@
-package com.example.spring_crud_um.student;
+package com.example.spring_crud_um.student.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

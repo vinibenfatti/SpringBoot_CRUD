@@ -1,5 +1,6 @@
-package com.example.spring_crud_um.student;
+package com.example.spring_crud_um.student.repository;
 
+import com.example.spring_crud_um.student.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

@@ -9,8 +9,8 @@ import java.util.*;
 
 import javax.annotation.PostConstruct;
 
-import com.example.spring_crud_um.student.Student;
-import com.example.spring_crud_um.student.StudentService;
+import com.example.spring_crud_um.student.model.Student;
+import com.example.spring_crud_um.student.service.StudentService;
 import io.restassured.http.ContentType;
 
 import net.minidev.json.JSONObject;

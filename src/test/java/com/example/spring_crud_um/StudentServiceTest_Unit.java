@@ -1,18 +1,13 @@
 package com.example.spring_crud_um;
 
-import com.example.spring_crud_um.student.Student;
-import com.example.spring_crud_um.student.StudentRepository;
-import com.example.spring_crud_um.student.StudentService;
-import org.assertj.core.api.AssertionsForClassTypes;
-import org.junit.Before;
-import org.junit.jupiter.api.AfterEach;
+import com.example.spring_crud_um.student.model.Student;
+import com.example.spring_crud_um.student.repository.StudentRepository;
+import com.example.spring_crud_um.student.service.StudentService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.core.AutoConfigureCache;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,7 +16,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -47,7 +41,6 @@ class StudentServiceTest_Unit {
     }
 
     @Test
-    @Disabled
     void canGetStudentsById() {
 
         //Given
@@ -130,7 +123,6 @@ class StudentServiceTest_Unit {
     }
 
     @Test
-    @Disabled
     void updateStudent() {
 
         // Given
