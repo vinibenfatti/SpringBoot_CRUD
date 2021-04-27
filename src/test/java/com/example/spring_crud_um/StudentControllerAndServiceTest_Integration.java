@@ -60,7 +60,6 @@ public class StudentControllerAndServiceTest_Integration {
                         given().log().all()
                                 .auth()
                                 .basic("admin", "admin")
-                                .contentType("application/json")
                         .when().log().all()
                                 .get(uri +  "/api/v1/student")
                         .then().log().all()
@@ -72,21 +71,42 @@ public class StudentControllerAndServiceTest_Integration {
 
     }
     @Test
+    public void whenGetAllStudentsShouldReturnStatus404() {
+
+                        given().log().all()
+                                .auth()
+                                .basic("admin", "admin")
+                        .when().log().all()
+                                .get(uri +  "/api/v1/stud")
+                        .then().log().all()
+                                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+    @Test
+    public void whenGetAllStudentsShouldReturnStatus401() {
+
+                        given().log().all()
+                                .auth()
+                                .basic("", "")
+                        .when().log().all()
+                                .get(uri +  "/api/v1/student")
+                        .then().log().all()
+                                .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
+    @Test
     public void whenGetStudentsByIdShouldReturnStatus200() {
 
         List<Student> testListStudent = new ArrayList<>();
         testListStudent.add(new Student (1L,"Test","test@gmail.com", LocalDate.now(),0));
         when(studentService.getStudentsById(1L)).thenReturn(testListStudent);
 
-        List<Student> resultStudent =
-                Arrays.asList(
+        List<Student> resultStudent = Arrays.asList(
                         given().log().all()
                                 .auth()
                                 .basic("admin", "admin")
                                 .contentType("application/json")
-                                .when().log().all()
+                        .when().log().all()
                                 .get(uri +  "/api/v1/student/"+1L)
-                                .then().log().all()
+                        .then().log().all()
                                 .statusCode(HttpStatus.OK.value())
                                 .extract()
                                 .as(Student[].class));
@@ -105,17 +125,18 @@ public class StudentControllerAndServiceTest_Integration {
         request.put("age", testStudent.getAge());
         request.put("name", testStudent.getName());
 
-
         when(studentService.addNewStudent(testStudent)).thenReturn(testStudent);
-       Response response = given().log().all()
+
+       Response response =
+               given().log().all()
                         .headers("Content-Type", ContentType.JSON, "Accept", ContentType.JSON)
                         .contentType(ContentType.JSON)
                         .auth()
                         .basic("admin", "admin")
                         .body(request)
-        .when().log().all()
+               .when().log().all()
                         .post(uri +  "/api/v1/student")
-        .then().log().all()
+               .then().log().all()
                         .assertThat()
                         .extract()
                         .response();
@@ -167,7 +188,7 @@ public class StudentControllerAndServiceTest_Integration {
                         .header("Content-type", "application/json")
                 .when().log().all()
                         .put(uri +  "/api/v1/student/" + testStudent.getId() +  "?name=" + newName + "&email=" + newEmail)
-                        .then()
+                .then()
                         .statusCode(HttpStatus.OK.value())
                         .extract()
                         .as(Student[].class));

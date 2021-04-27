@@ -20,7 +20,7 @@ class StudentRepositoryTest_Unit {
     private StudentRepository underTest;
 
     @AfterEach
-    void tearDOwn(){
+    void tearDown(){
         underTest.deleteAll();
     }
 

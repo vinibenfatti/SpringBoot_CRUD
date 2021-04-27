@@ -92,7 +92,6 @@ class StudentServiceTest_Unit {
         verify(studentRepository, never()).save(student);
 
     }
-
     @Test
     void canDeleteStudent() {
         // given
