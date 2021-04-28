@@ -28,6 +28,7 @@ public class StudentService {
     public List<Student> getStudentsById(Long studentId) {
         boolean exists = studentRepository.existsById(studentId);
         if(!exists){
+            log.error("Student with this ID does not exists");
             throw new IllegalStateException(
                     "Student with id: "+ studentId + " does not exists");
         }
@@ -39,9 +40,11 @@ public class StudentService {
         Optional<Student> studentOpt = studentRepository
                 .findStudentByEmail(student.getEmail());
         if(studentOpt.isPresent()){
+            log.error("Student with this Email already exists");
             throw new IllegalStateException("Email already exists");
         }
         if (student.getName().isBlank() || student.getEmail().isBlank() || student.getDob()==null) {
+            log.error("Values cannot be null or empty");
             throw new IllegalStateException("Parameter error, bad request");
         }
         else {
@@ -55,6 +58,7 @@ public class StudentService {
     public Long deleteStudent(Long studentId) {
         boolean exists = studentRepository.existsById(studentId);
         if(!exists){
+            log.error("Student with this ID does not exists");
             throw new IllegalStateException(
                            "Student with id: "+ studentId + " does not exists");
         }
@@ -77,14 +81,13 @@ public class StudentService {
         if(email != null && email.length() > 0 && !Objects.equals(student.getEmail(),email)) {
             Optional<Student> studentOptional = studentRepository.findStudentByEmail(email);
             if (studentOptional.isPresent()) {
+                log.error("Student with this Email already exists");
                 throw new IllegalStateException("Email already exists");
             }
             log.info("Updating Student Email");
             student.setEmail(email);
-
         }
         log.info("Returning Student Updated");
         return this.getStudentsById(studentId);
-
     }
 }

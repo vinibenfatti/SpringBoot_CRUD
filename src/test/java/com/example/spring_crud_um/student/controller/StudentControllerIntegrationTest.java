@@ -9,7 +9,7 @@ import java.util.*;
 
 import javax.annotation.PostConstruct;
 
-import com.example.spring_crud_um.SpringCrudUmApplication;
+
 import com.example.spring_crud_um.student.model.Student;
 import com.example.spring_crud_um.student.service.StudentService;
 import io.restassured.http.ContentType;
