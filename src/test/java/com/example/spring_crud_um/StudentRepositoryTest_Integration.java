@@ -1,5 +1,6 @@
 package com.example.spring_crud_um;
 
+import com.example.spring_crud_um.SpringCrudUmApplication;
 import com.example.spring_crud_um.student.model.Student;
 import com.example.spring_crud_um.student.repository.StudentRepository;
 import org.assertj.core.api.Assertions;
@@ -8,13 +9,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @DataJpaTest
-class StudentRepositoryTest_Unit {
+class StudentRepositoryTest_Integration {
 
     @Autowired
     private StudentRepository underTest;

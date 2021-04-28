@@ -1,4 +1,4 @@
-package com.example.spring_crud_um;
+package unitTest;
 
 import com.example.spring_crud_um.student.model.Student;
 import com.example.spring_crud_um.student.repository.StudentRepository;

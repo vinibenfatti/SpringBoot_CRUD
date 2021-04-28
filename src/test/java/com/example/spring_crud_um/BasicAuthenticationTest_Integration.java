@@ -1,5 +1,6 @@
 package com.example.spring_crud_um;
 
+import com.example.spring_crud_um.SpringCrudUmApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
