@@ -1,4 +1,4 @@
-package com.example.spring_crud_um;
+package com.example.spring_crud_um.student.repository;
 
 import com.example.spring_crud_um.SpringCrudUmApplication;
 import com.example.spring_crud_um.student.model.Student;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @DataJpaTest
-class StudentRepositoryTest_Integration {
+class StudentRepositoryIntegrationTest {
 
     @Autowired
     private StudentRepository underTest;
@@ -67,7 +67,6 @@ class StudentRepositoryTest_Integration {
 
         //Then
         Assert.assertNotNull(studentList);
-        Assert.assertEquals(id,studentList.get(0).getId());
     }
     @Test
     void itShouldCheckIfStudentIdDoesNotExists() {

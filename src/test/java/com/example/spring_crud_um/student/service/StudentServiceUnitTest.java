@@ -1,4 +1,4 @@
-package unitTest;
+package com.example.spring_crud_um.student.service;
 
 import com.example.spring_crud_um.student.model.Student;
 import com.example.spring_crud_um.student.repository.StudentRepository;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class StudentServiceTest_Unit {
+class StudentServiceUnitTest {
 
     @Mock
     private StudentRepository studentRepository;
@@ -39,7 +39,6 @@ class StudentServiceTest_Unit {
         //Then
         verify(studentRepository).findAll();
     }
-
     @Test
     void canGetStudentsById() {
 
@@ -56,8 +55,6 @@ class StudentServiceTest_Unit {
         //Then
         verify(studentRepository).findStudentById(student.get(0).getId());
     }
-
-
     @Test
     void canAddNewStudent() {
         //Given
@@ -76,7 +73,7 @@ class StudentServiceTest_Unit {
         assertThat(capturedStudent).isEqualTo(student);
     }
     @Test
-    void willThrowWhenEmailIsTaken() {
+    void willThrowWhenAddEmailIsTaken() {
         //Given
         Student student =new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
         Optional<Student> studentOptional = Optional.of(new Student(1L, "Test", "test@gmail.com", LocalDate.now(), 0));
@@ -91,6 +88,36 @@ class StudentServiceTest_Unit {
 
         verify(studentRepository, never()).save(student);
 
+    }
+    @Test
+    void willThrowWhenUpdateEmailIsTaken() {
+        //Given
+        Student student =new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
+        Optional<Student> studentOptional = Optional.of(new Student(1L, "Test", "test@gmail.com", LocalDate.now(), 0));
+
+        BDDMockito.given(studentRepository.findStudentByEmail(studentOptional.get().getEmail()))
+                .willReturn(studentOptional);
+        BDDMockito.given(studentRepository.findById(studentOptional.get().getId()))
+                .willReturn(studentOptional);
+
+        //When
+        //Then
+        assertThatThrownBy(() ->underTest.updateStudent(student.getId(),student.getName(),student.getEmail()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Email already exists");
+
+        verify(studentRepository, never()).save(student);
+
+    }
+    @Test
+    public void willThrowWhenAddNewStudentWithBlankParam() {
+        //When
+        Student student =new Student (1L,"","test@gmail.com", LocalDate.now(),0);
+
+        //Then
+        assertThatThrownBy(() -> underTest.addNewStudent(student))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Parameter error, bad request");
     }
     @Test
     void canDeleteStudent() {
@@ -120,7 +147,19 @@ class StudentServiceTest_Unit {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("Student with id: "+ student.getId() + " does not exists");
     }
+    @Test
+    void willThrowWhenGetStudentByIdNotFound() {
+        // Given
+        Student student =new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
 
+        // When
+        BDDMockito.given(studentRepository.existsById(student.getId())).willReturn(false);
+
+        // Then
+        assertThatThrownBy(() -> underTest.getStudentsById(student.getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Student with id: "+ student.getId() + " does not exists");
+    }
     @Test
     void updateStudent() {
 
@@ -143,8 +182,5 @@ class StudentServiceTest_Unit {
         // then
         assertThat(studentObj.getName()).isEqualTo(name);
         assertThat(studentObj.getEmail()).isEqualTo(email);
-
-
-
     }
 }

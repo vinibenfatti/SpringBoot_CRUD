@@ -1,20 +1,19 @@
-package com.example.spring_crud_um;
+package com.example.spring_crud_um.student.controller;
 
 import com.example.spring_crud_um.SpringCrudUmApplication;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.*;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
+
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-public class BasicAuthenticationTest_Integration {
+public class BasicAuthenticationIntegrationTest {
 
 
     @Test

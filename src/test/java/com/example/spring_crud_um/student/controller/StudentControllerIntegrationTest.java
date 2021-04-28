@@ -1,4 +1,4 @@
-package com.example.spring_crud_um;
+package com.example.spring_crud_um.student.controller;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,25 +15,20 @@ import com.example.spring_crud_um.student.service.StudentService;
 import io.restassured.http.ContentType;
 
 import net.minidev.json.JSONObject;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.*;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
-
 
 
 import io.restassured.response.Response;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-public class StudentControllerAndServiceTest_Integration {
+public class StudentControllerIntegrationTest {
 
     @LocalServerPort
     private int port;
@@ -142,7 +137,7 @@ public class StudentControllerAndServiceTest_Integration {
                         .extract()
                         .response();
 
-        Assert.assertEquals(200,response.statusCode());
+        Assertions.assertEquals(200,response.statusCode());
         Assertions.assertEquals(testStudent + " posted", response.getBody().asString());
     }
 
@@ -163,8 +158,8 @@ public class StudentControllerAndServiceTest_Integration {
                         .extract()
                         .response();
 
-        Assert.assertEquals(200,response.statusCode());
-        Assert.assertEquals("The student with ID:"+ testStudent.getId() + " deleted", response.getBody().asString());
+        Assertions.assertEquals(200,response.statusCode());
+        Assertions.assertEquals("The student with ID:"+ testStudent.getId() + " deleted", response.getBody().asString());
 
     }
 
