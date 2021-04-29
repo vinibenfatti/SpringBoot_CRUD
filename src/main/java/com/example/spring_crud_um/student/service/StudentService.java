@@ -21,18 +21,17 @@ public class StudentService {
     }
 
     public List<Student> getAllStudents() {
-        log.info("Returning GetAllStudent");
+        log.info("########## Returning GetAllStudent ##########");
        return studentRepository.findAll();
     }
 
     public List<Student> getStudentsById(Long studentId) {
         boolean exists = studentRepository.existsById(studentId);
         if(!exists){
-            log.error("Student with this ID does not exists");
             throw new IllegalStateException(
                     "Student with id: "+ studentId + " does not exists");
         }
-        log.info("Returning FindStudentById");
+        log.info("########## Returning FindStudentById ##########");
         return studentRepository.findStudentById(studentId);
     }
 
@@ -40,17 +39,15 @@ public class StudentService {
         Optional<Student> studentOpt = studentRepository
                 .findStudentByEmail(student.getEmail());
         if(studentOpt.isPresent()){
-            log.error("Student with this Email already exists");
             throw new IllegalStateException("Email already exists");
         }
         if (student.getName().isBlank() || student.getEmail().isBlank() || student.getDob()==null) {
-            log.error("Values cannot be null or empty");
             throw new IllegalStateException("Parameter error, bad request");
         }
         else {
-            log.info("Saving NewStudent");
+            log.info("########## Saving NewStudent ##########");
             studentRepository.save(student);
-            log.info("Returning Student Posted");
+            log.info("##########  Returning Student Posted ##########");
             return student;
         }
     }
@@ -58,13 +55,12 @@ public class StudentService {
     public Long deleteStudent(Long studentId) {
         boolean exists = studentRepository.existsById(studentId);
         if(!exists){
-            log.error("Student with this ID does not exists");
             throw new IllegalStateException(
                            "Student with id: "+ studentId + " does not exists");
         }
-        log.info("Deleting Student");
+        log.info("########## Deleting Student ##########");
         studentRepository.deleteById(studentId);
-        log.info("Returning Student Deleted");
+        log.info("########## Returning Student Deleted ##########");
         return studentId;
     }
 
@@ -74,20 +70,19 @@ public class StudentService {
                 "Student with id: "+ studentId + "does not exists"));
 
         if(name != null && name.length() > 0 && !Objects.equals(student.getName(),name)){
-            log.info("Updating Student Name");
+            log.info("########## Updating Student Name ##########");
             student.setName(name);
         }
 
         if(email != null && email.length() > 0 && !Objects.equals(student.getEmail(),email)) {
             Optional<Student> studentOptional = studentRepository.findStudentByEmail(email);
             if (studentOptional.isPresent()) {
-                log.error("Student with this Email already exists");
                 throw new IllegalStateException("Email already exists");
             }
-            log.info("Updating Student Email");
+            log.info("########## Updating Student Email ##########");
             student.setEmail(email);
         }
-        log.info("Returning Student Updated");
+        log.info("########## Returning Student Updated ##########");
         return this.getStudentsById(studentId);
     }
 }

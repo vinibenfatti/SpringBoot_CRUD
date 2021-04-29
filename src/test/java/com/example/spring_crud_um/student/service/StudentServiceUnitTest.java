@@ -3,6 +3,7 @@ package com.example.spring_crud_um.student.service;
 import com.example.spring_crud_um.student.model.Student;
 import com.example.spring_crud_um.student.repository.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;

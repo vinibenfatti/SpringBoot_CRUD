@@ -19,7 +19,7 @@ public class StudentController {
 
     @GetMapping
     public List<Student> getAllStudents() {
-       log.info("GetAllStudents endpoint was called");
+       log.info("########## GetAllStudents endpoint was called ##########");
        return studentService.getAllStudents();
 
     }
@@ -27,20 +27,20 @@ public class StudentController {
     @GetMapping(path = "{studentId}")
     public List<Student> getStudentsById(
         @PathVariable("studentId") Long studentId){
-        log.info("GetStudentById endpoint was called");
+        log.info("########## GetStudentById endpoint was called ##########");
         return studentService.getStudentsById(studentId);
     }
 
     @PostMapping
     public String registerNewStudent(@RequestBody Student student){
-        log.info("RegisterNewStudent endpoint was called");
+        log.info("########## RegisterNewStudent endpoint was called ##########");
         return studentService.addNewStudent(student) + " posted";
     }
 
     @DeleteMapping(path = "{studentId}")
     public String deleteStudent(
             @PathVariable("studentId") Long studentId){
-        log.info("DeleteStudent endpoint was called");
+        log.info("########## DeleteStudent endpoint was called ##########");
         studentService.deleteStudent(studentId);
         return ("The student with ID:"+ studentId + " deleted");
     }
@@ -50,7 +50,7 @@ public class StudentController {
             @PathVariable("studentId") Long studentId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email){
-        log.info("UpdateStudent endpoint was called");
+        log.info("########## UpdateStudent endpoint was called ##########");
        return studentService.updateStudent(studentId, name, email);
     }
 }
