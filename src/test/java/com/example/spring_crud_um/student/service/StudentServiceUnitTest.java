@@ -3,7 +3,6 @@ package com.example.spring_crud_um.student.service;
 import com.example.spring_crud_um.student.model.Student;
 import com.example.spring_crud_um.student.repository.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -86,27 +85,6 @@ class StudentServiceUnitTest {
                 .hasMessageContaining("Email already exists");
 
         verify(studentRepository, never()).save(student);
-    }
-    @Test
-    @Disabled
-    void willThrowWhenUpdateEmailIsTaken() {
-        //Given
-        Student student =new Student (1L,"Test","test@gmail.com", LocalDate.now(),0);
-        Optional<Student> studentOptional = Optional.of(new Student(1L, "Test", "test@gmail.com", LocalDate.now(), 0));
-
-        BDDMockito.given(studentRepository.findStudentByEmail(studentOptional.get().getEmail()))
-                .willReturn(studentOptional);
-        BDDMockito.given(studentRepository.findById(studentOptional.get().getId()))
-                .willReturn(studentOptional);
-
-        //When
-        //Then
-        assertThatThrownBy(() ->underTest.updateStudent(student.getId(),student.getName(),student.getEmail()))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("Email already exists");
-
-        verify(studentRepository, never()).save(student);
-
     }
     @Test
     public void willThrowWhenAddNewStudentWithBlankParam() {
